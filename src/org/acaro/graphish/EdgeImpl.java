@@ -6,8 +6,9 @@ public class EdgeImpl implements Edge {
 	private String type;
 	private byte[] id;
 	
-	protected EdgeImpl(Graphish graph, byte[] id, Vertex from, Vertex to){
+	protected EdgeImpl(Graphish graph, byte[] id, Vertex from, Vertex to, String type){
 		this.graph = graph;
+		this.type  = type;
 		this.from  = from;
 		this.to = to;
 		this.id = id;
@@ -18,27 +19,27 @@ public class EdgeImpl implements Edge {
 	}
 
 	public boolean hasProperty(String key) {
-		return graph.hasProperty(this, key);
+		return graph.getStore().hasProperty(this, key);
 	}
 
 	public byte[] setProperty(String key, byte[] value) {
-		return graph.setProperty(this, key, value);
+		return graph.getStore().setProperty(this, key, value);
 	}
 
 	public byte[] getProperty(String key) {
-		return graph.getProperty(this, key);
+		return graph.getStore().getProperty(this, key);
 	}
 
 	public byte[] removeProperty(String key) {
-		return graph.removeProperty(this, key);
+		return graph.getStore().removeProperty(this, key);
 	}
 
 	public Iterable<String> getPropertyKeys() {
-		return graph.getPropertyKeys(this);
+		return graph.getStore().getPropertyKeys(this);
 	}
 
 	public Iterable<byte[]> getPropertyValues() {
-		return graph.getPropertyValues(this);
+		return graph.getStore().getPropertyValues(this);
 	}
 
 	public Vertex getFrom() {

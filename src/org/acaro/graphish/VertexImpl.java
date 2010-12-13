@@ -6,6 +6,7 @@ import java.util.HashMap;
 /*
  * XXX: should implement a better hashCode based on id?
  * As Graphish creates the Vertices, there should never be two Vertex instances with same id around... 
+ * TODO: add specular call for putting edge vertex.putOutgoingEdge(other) should also call other.putIncomingEdge(vertex)
  */
 
 
@@ -16,6 +17,7 @@ public class VertexImpl implements Vertex {
 	private HashMap<byte[], Edge> outgoing = new HashMap<byte[], Edge>();
 	private HashMap<byte[], Edge> incoming = new HashMap<byte[], Edge>();
 	private Graphish graph;
+	private GraphStore store;
 	private byte[] id;
 	
 	protected VertexImpl(Graphish graph, byte[] id){
@@ -24,27 +26,27 @@ public class VertexImpl implements Vertex {
 	}
 	
 	public boolean hasProperty(String key) {
-		return graph.hasProperty(this, key);
+		return graph.getStore().hasProperty(this, key);
 	}
 
 	public byte[] setProperty(String key, byte[] value) {
-		return graph.setProperty(this, key, value);
+		return graph.getStore().setProperty(this, key, value);
 	}
 
 	public byte[] getProperty(String key) {
-		return graph.getProperty(this, key);
+		return graph.getStore().getProperty(this, key);
 	}
 
 	public byte[] removeProperty(String key) {
-		return graph.removeProperty(this, key);
+		return graph.getStore().removeProperty(this, key);
 	}
 
 	public Iterable<String> getPropertyKeys() {
-		return graph.getPropertyKeys(this);
+		return graph.getStore().getPropertyKeys(this);
 	}
 
 	public Iterable<byte[]> getPropertyValues() {
-		return graph.getPropertyValues(this);
+		return graph.getStore().getPropertyValues(this);
 	}
 
 	public byte[] getId() {
@@ -74,9 +76,9 @@ public class VertexImpl implements Vertex {
 			return new ArrayList<Edge>(); //XXX: anything better than ArrayList for an empty List?
 		}
 		
-		return typedOutgoing.get(type).values();
+		return n.values();
 	}
-
+	
 	public Edge putIncomingEdge(Vertex other, String type) {
 		Edge edge = graph.createEdge(this, other, type);
 		incoming.put(other.getId(), edge);
@@ -100,6 +102,6 @@ public class VertexImpl implements Vertex {
 			return new ArrayList<Edge>(); //XXX: anything better than ArrayList for an empty List?
 		}
 		
-		return typedIncoming.get(type).values();
+		return n.values();
 	}
 }

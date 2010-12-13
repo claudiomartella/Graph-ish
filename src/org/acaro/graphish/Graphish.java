@@ -1,80 +1,54 @@
 package org.acaro.graphish;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.util.HashMap;
+
+/*
+ * TODO: add the code for id generation. Ideally UUID.randomUUID().toBytesArray()
+ */
 
 public class Graphish  {
 	private GraphStore store;
+	private HashMap<byte[], Vertex> vertices = new HashMap<byte[], Vertex>();
 	
 	public Graphish(GraphStore store) throws IOException {
 		this.store = store;
 	}
 
-	protected boolean hasProperty(Vertex vertex, String key) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	protected byte[] setProperty(Vertex vertex, String key, byte[] value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected byte[] getProperty(Vertex vertex, String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected byte[] removeProperty(Vertex vertex, String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected Iterable<String> getPropertyKeys(Vertex vertex) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected Iterable<byte[]> getPropertyValues(Vertex vertex) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected boolean hasProperty(Edge edge, String key) {
-		// TODO Auto-generated method stub
-		return false;
+	public Edge createEdge(Vertex from, Vertex to, String type) {
+		byte[] id;
+		// should create id from UUID
+		Edge e = new EdgeImpl(this, id, from, to, type);
+		from.putOutgoingEdge(to, type);
+		
+		// persist? store...
+		
+		return e;
 	}
 	
-	protected byte[] setProperty(Edge edge, String key, byte[] value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected byte[] getProperty(Edge edge, String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected byte[] removeProperty(Edge edge, String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected Iterable<String> getPropertyKeys(Edge edge) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected Iterable<byte[]> getPropertyValues(Edge edge) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected Edge createEdge(Vertex from, Vertex to, String type) {
-		// TODO Auto-generated method stub
-		return null;
+	public Vertex getVertex(byte[] id) {
+		return vertices.get(id);
 	}
 	
-	public Vertex createVertex();
+	public Vertex createVertex() {
+		byte[] id;
+		
+		Vertex v = new VertexImpl(this, id);
+		vertices.put(id, v);
+		
+		// persist? store...
+		
+		return v;
+	}
 	
+	public Vertex removeVertex(byte[] id) {
+		Vertex v = getVertex(id);
+		
+		// v.die(); should remove itself from neighborhood's adj and persistence layer
+		return v;
+	}
+	
+	protected GraphStore getStore(){
+		return this.store;
+	}
 }
