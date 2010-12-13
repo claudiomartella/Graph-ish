@@ -3,8 +3,8 @@ package org.acaro.graphish;
 import java.util.HashMap;
 
 public class PropertyContainerImpl implements PropertyContainer {
-	private byte[] id;
 	private HashMap<String, byte[]> props = new HashMap<String, byte[]>();
+	private byte[] id;
 	
 	public byte[] getId() {
 		return id;

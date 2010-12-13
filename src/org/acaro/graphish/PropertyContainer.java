@@ -2,9 +2,11 @@ package org.acaro.graphish;
 
 public interface PropertyContainer {
 
+	public byte[] getId();
+	
 	public boolean hasProperty(String key);
 	
-	public void setProperty(String key, byte[] value);
+	public byte[] setProperty(String key, byte[] value);
 	
 	public byte[] getProperty(String key);
 	

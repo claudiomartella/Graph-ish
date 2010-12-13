@@ -50,11 +50,7 @@ public class VertexImpl implements Vertex {
 	public byte[] getId() {
 		return this.id;
 	}
-	/*XXX: how should we behave in case the edge already exist?
-		1) silently substitute
-		2) silently substitute but return old value
-		3) throw exception
-	*/
+
 	public Edge putOutgoingEdge(Vertex other, String type) {
 		Edge edge = graph.createEdge(this, other, type);
 		outgoing.put(other.getId(), edge);
@@ -64,10 +60,8 @@ public class VertexImpl implements Vertex {
 			n = new HashMap<byte[], Edge>();
 		}
 		
-		n.put(other.getId(), edge);
 		typedOutgoing.put(type, n);
-		
-		return edge;
+		return n.put(other.getId(), edge);
 	}
 
 	public Iterable<Edge> getOutgoingEdges() {
@@ -92,10 +86,8 @@ public class VertexImpl implements Vertex {
 			n = new HashMap<byte[], Edge>();
 		}
 		
-		n.put(other.getId(), edge);
 		typedIncoming.put(type, n);
-		
-		return edge;
+		return n.put(other.getId(), edge);
 	}
 
 	public Iterable<Edge> getIncomingEdges() {

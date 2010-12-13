@@ -1,10 +1,7 @@
 package org.acaro.graphish;
 
 import java.io.IOException;
-
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.client.HTable;
+import java.util.UUID;
 
 public class Graphish  {
 	private GraphStore store;
@@ -13,42 +10,71 @@ public class Graphish  {
 		this.store = store;
 	}
 
-	public Vertex addVertex() {
-		return store.createVertex();
+	protected boolean hasProperty(Vertex vertex, String key) {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	public Vertex getVertex() {
+
+	protected byte[] setProperty(Vertex vertex, String key, byte[] value) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void removeVertex(Vertex v) {
-		store.removeVertex(v);
+	protected byte[] getProperty(Vertex vertex, String key) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label){
+	protected byte[] removeProperty(Vertex vertex, String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Iterable<String> getPropertyKeys(Vertex vertex) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Iterable<byte[]> getPropertyValues(Vertex vertex) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected boolean hasProperty(Edge edge, String key) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	protected byte[] setProperty(Edge edge, String key, byte[] value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected byte[] getProperty(Edge edge, String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected byte[] removeProperty(Edge edge, String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Iterable<String> getPropertyKeys(Edge edge) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Iterable<byte[]> getPropertyValues(Edge edge) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Edge createEdge(Vertex from, Vertex to, String type) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public Edge getEdge(Object id) {
-		return null;
-	}
+	public Vertex createVertex();
 	
-	public void removeEdge(Edge edge) {
-	}
-	// sync, flush and close connections
-	public void shutdown() {
-		store.shutdown();
-	}
-	// delete the graph from storage
-	public void clear() {
-		store.clear();
-	}
-
-	public Iterable<Edge> getEdges() {
-		return null;
-	}
-		
-	public Iterable<Vertex> getVertices() {
-		return null;
-	}
 }

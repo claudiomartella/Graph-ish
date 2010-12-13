@@ -3,3 +3,5 @@
 .project
 *.class
 *.jar
+target
+bin
