@@ -3,18 +3,16 @@ package org.acaro.graphish;
 import java.util.HashMap;
 
 /*
- * Read/Write Through Cache with Storage fallback
+ * Write stuff to memory and that's it
  * 
- * TODO: what happens if the requested edge/vertex doesn't exist in fallback?
+ * TODO: what to do with non-existing vertex/edge?
  */
 
-public class ThroughCacheGraphStore implements GraphStore {
-	private GraphStore fallback;
+public class MemoryGraphStore implements GraphStore {
 	private HashMap<byte[], PropertyContainer> vProps = new HashMap<byte[], PropertyContainer>();
 	private HashMap<byte[], PropertyContainer> eProps = new HashMap<byte[], PropertyContainer>();
 	
-	public ThroughCacheGraphStore(GraphStore fallback){
-		this.fallback = fallback;
+	public MemoryGraphStore(){
 	}
 
 	public boolean hasProperty(Vertex vertex, String key) {
@@ -25,9 +23,8 @@ public class ThroughCacheGraphStore implements GraphStore {
 
 	public byte[] setProperty(Vertex vertex, String key, byte[] value) {
 		PropertyContainer p = checkAndSet(vertex);
-		p.setProperty(key, value);
-		
-		return fallback.setProperty(vertex, key, value);
+
+		return p.setProperty(key, value);
 	}
 
 	public byte[] getProperty(Vertex vertex, String key) {
@@ -38,9 +35,8 @@ public class ThroughCacheGraphStore implements GraphStore {
 
 	public byte[] removeProperty(Vertex vertex, String key) {
 		PropertyContainer p = checkAndSet(vertex);
-		p.removeProperty(key);
-		
-		return fallback.removeProperty(vertex, key);
+
+		return p.removeProperty(key);
 	}
 
 	public Iterable<String> getPropertyKeys(Vertex vertex) {
@@ -63,9 +59,8 @@ public class ThroughCacheGraphStore implements GraphStore {
 
 	public byte[] setProperty(Edge edge, String key, byte[] value) {
 		PropertyContainer p = checkAndSet(edge);
-		p.setProperty(key, value);
-		
-		return fallback.setProperty(edge, key, value);
+
+		return p.setProperty(key, value);
 	}
 
 	public byte[] getProperty(Edge edge, String key) {
@@ -76,9 +71,8 @@ public class ThroughCacheGraphStore implements GraphStore {
 
 	public byte[] removeProperty(Edge edge, String key) {
 		PropertyContainer p = checkAndSet(edge);
-		p.removeProperty(key);
 		
-		return fallback.removeProperty(edge, key);
+		return p.removeProperty(key);
 	}
 
 	public Iterable<String> getPropertyKeys(Edge edge) {
@@ -104,7 +98,7 @@ public class ThroughCacheGraphStore implements GraphStore {
 	private PropertyContainer checkAndSet(Vertex vertex){
 		PropertyContainer p;
 		if((p = vProps.get(vertex.getId()))== null){
-			p = fallback.getPropertyContainer(vertex);
+			p = new PropertyContainerImpl();
 			vProps.put(vertex.getId(), p);
 		}
 		
@@ -114,7 +108,7 @@ public class ThroughCacheGraphStore implements GraphStore {
 	private PropertyContainer checkAndSet(Edge edge){
 		PropertyContainer p;
 		if((p = eProps.get(edge.getId()))== null){
-			p = fallback.getPropertyContainer(edge);
+			p = new PropertyContainerImpl();
 			eProps.put(edge.getId(), p);
 		}
 		
