@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
- * XXX: should implement a better hashCode based on id?
+ * XXX: should implement own hashCode based on id?
  * As Graphish creates the Vertices, there should never be two Vertex instances with same id around... 
  * TODO: add specular call for putting edge vertex.putOutgoingEdge(other) should also call other.putIncomingEdge(vertex)
  */
@@ -19,11 +19,30 @@ public class VertexImpl implements Vertex {
 	private Graphish graph;
 	private GraphStore store;
 	private byte[] id;
+	private int hashCode = -1;
 	
 	protected VertexImpl(Graphish graph, byte[] id){
 		this.graph = graph;
 		this.id    = id;
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VertexImpl)) return false;
+
+        VertexImpl vertex = (VertexImpl) o;
+
+        return this.id.equals(vertex.id);
+    }
+	
+	@Override
+    public int hashCode() {
+        if (hashCode == -1) // only calculate the hash code once
+            hashCode = this.id.hashCode();
+
+        return hashCode;
+    }
 	
 	public boolean hasProperty(String key) {
 		return graph.getStore().hasProperty(this, key);

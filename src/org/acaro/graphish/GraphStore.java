@@ -13,6 +13,8 @@ public interface GraphStore {
 	public Iterable<String> getPropertyKeys(Vertex vertex);
 
 	public Iterable<byte[]> getPropertyValues(Vertex vertex);
+	
+	public PropertyContainer getPropertyContainer(Vertex vertex);
 
 	/* Edge support methods*/
 	
@@ -27,4 +29,6 @@ public interface GraphStore {
 	public Iterable<String> getPropertyKeys(Edge edge);
 
 	public Iterable<byte[]> getPropertyValues(Edge edge);
+	
+	public PropertyContainer getPropertyContainer(Edge edge);
 }
