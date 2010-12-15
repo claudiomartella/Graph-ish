@@ -5,7 +5,9 @@ import java.util.HashMap;
 /*
  * Read/Write Through Cache with Storage fallback
  * 
- * TODO: what happens if the requested edge/vertex doesn't exist in fallback?
+ * TODO:1) what happens if the requested edge/vertex doesn't exist in fallback? [FIX: should add it at create*() to map and relay on that]
+ * 		2) it could actually contain a fallback and a cache GraphStore which points to MemoryGraphStore. no need to reinvent the wheel
+ * 
  */
 
 public class ThroughCacheGraphStore implements GraphStore {
@@ -119,5 +121,13 @@ public class ThroughCacheGraphStore implements GraphStore {
 		}
 		
 		return p;
+	}
+
+	public Vertex createVertex(Graphish graph) {
+		return fallback.createVertex(graph);
+	}
+
+	public Edge createEdge(Graphish graph, Vertex from, Vertex to, String type) {
+		return fallback.createEdge(graph, from, to, type);
 	}
 }

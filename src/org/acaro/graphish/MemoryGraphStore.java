@@ -1,14 +1,18 @@
 package org.acaro.graphish;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.UUID;
 
 /*
  * Write stuff to memory and that's it
  * 
- * TODO: what to do with non-existing vertex/edge?
+ * TODO: what to do with non-existing vertex/edge? [FIX: shoud add this at create*() and relay on it's presence in props map]
+ * 		 implement LRU semantics? Maybe in other LRUGraphStore?
  */
 
 public class MemoryGraphStore implements GraphStore {
+	private static final byte[] EDGE_CONJ = { 0x2b };
 	private HashMap<byte[], PropertyContainer> vProps = new HashMap<byte[], PropertyContainer>();
 	private HashMap<byte[], PropertyContainer> eProps = new HashMap<byte[], PropertyContainer>();
 	
@@ -113,5 +117,26 @@ public class MemoryGraphStore implements GraphStore {
 		}
 		
 		return p;
+	}
+
+	public Vertex createVertex(Graphish graph) {
+		UUID id = UUID.randomUUID();
+		
+		return new VertexImpl(graph, Bytes.fromUuid(id).toByteArray());
+	}
+
+	public Edge createEdge(Graphish graph, Vertex from, Vertex to, String type) { 
+		byte id[] = createEdgeId(from, to);
+		
+		return new EdgeImpl(graph, id, from, to, type);
+	}
+
+	private byte[] createEdgeId(Vertex from, Vertex to) {
+		byte[] buff = new byte[from.getId().length+to.getId().length+1];
+		System.arraycopy(from.getId(), 0, buff, 0, from.getId().length);
+		System.arraycopy(EDGE_CONJ, 0, buff, from.getId().length, 1);
+		System.arraycopy(to.getId(), 0, buff, from.getId().length+1, to.getId().length);
+		
+		return buff;
 	}
 }

@@ -1,7 +1,15 @@
 package org.acaro.graphish;
 
+/*
+ * XXX: Does it make sense to have different methods for vertices and edges? In the end they are both PropertyContainers and have different ids
+ * 		Why not refactor accepting a PropertyContainer as a parameter?
+ */
+
+
 public interface GraphStore {
 	/* Vertex support methods */
+	public Vertex createVertex(Graphish graph);
+	
 	public boolean hasProperty(Vertex vertex, String key);
 
 	public byte[] setProperty(Vertex vertex, String key, byte[] value);
@@ -17,6 +25,7 @@ public interface GraphStore {
 	public PropertyContainer getPropertyContainer(Vertex vertex);
 
 	/* Edge support methods*/
+	public Edge createEdge(Graphish graph, Vertex from, Vertex to, String type);
 	
 	public boolean hasProperty(Edge edge, String key);
 	

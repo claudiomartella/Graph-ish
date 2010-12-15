@@ -2,9 +2,10 @@ package org.acaro.graphish;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.UUID;
 
 /*
- * TODO: add the code for id generation. Ideally UUID.randomUUID().toBytesArray()
+ * TODO: edges' id shouldn't be UUID, GraphStore should handle that
  */
 
 public class Graphish  {
@@ -16,9 +17,9 @@ public class Graphish  {
 	}
 
 	public Edge createEdge(Vertex from, Vertex to, String type) {
-		byte[] id;
-		// should create id from UUID
-		Edge e = new EdgeImpl(this, id, from, to, type);
+		UUID id = UUID.randomUUID();
+		
+		Edge e = new EdgeImpl(this, Bytes.fromUuid(id).toByteArray(), from, to, type);
 		from.putOutgoingEdge(to, type);
 		
 		// persist? store...
@@ -31,10 +32,10 @@ public class Graphish  {
 	}
 	
 	public Vertex createVertex() {
-		byte[] id;
+		UUID id = UUID.randomUUID();
 		
-		Vertex v = new VertexImpl(this, id);
-		vertices.put(id, v);
+		Vertex v = new VertexImpl(this, Bytes.fromUuid(id).toByteArray());
+		vertices.put(v.getId(), v);
 		
 		// persist? store...
 		
