@@ -5,39 +5,23 @@ package org.acaro.graphish;
  * 		Why not refactor accepting a PropertyContainer as a parameter?
  */
 
-
 public interface GraphStore {
 	/* Vertex support methods */
 	public Vertex createVertex(Graphish graph);
 	
-	public boolean hasProperty(Vertex vertex, String key);
-
-	public byte[] setProperty(Vertex vertex, String key, byte[] value);
-
-	public byte[] getProperty(Vertex vertex, String key);
-
-	public byte[] removeProperty(Vertex vertex, String key);
-
-	public Iterable<String> getPropertyKeys(Vertex vertex);
-
-	public Iterable<byte[]> getPropertyValues(Vertex vertex);
-	
-	public PropertyContainer getPropertyContainer(Vertex vertex);
-
-	/* Edge support methods*/
 	public Edge createEdge(Graphish graph, Vertex from, Vertex to, String type);
 	
-	public boolean hasProperty(Edge edge, String key);
+	public boolean hasProperty(PropertyContainer container, String key);
+
+	public byte[] setProperty(PropertyContainer container, String key, byte[] value);
+
+	public byte[] getProperty(PropertyContainer container, String key);
+
+	public byte[] removeProperty(PropertyContainer container, String key);
+
+	public Iterable<String> getPropertyKeys(PropertyContainer container);
+
+	public Iterable<byte[]> getPropertyValues(PropertyContainer container);
 	
-	public byte[] setProperty(Edge edge, String key, byte[] value);
-
-	public byte[] getProperty(Edge edge, String key);
-
-	public byte[] removeProperty(Edge edge, String key);
-
-	public Iterable<String> getPropertyKeys(Edge edge);
-
-	public Iterable<byte[]> getPropertyValues(Edge edge);
-	
-	public PropertyContainer getPropertyContainer(Edge edge);
+	public PropertyContainer getPropertyContainer(PropertyContainer container);
 }

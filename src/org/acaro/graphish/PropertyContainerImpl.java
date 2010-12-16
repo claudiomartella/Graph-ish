@@ -6,6 +6,10 @@ public class PropertyContainerImpl implements PropertyContainer {
 	private HashMap<String, byte[]> props = new HashMap<String, byte[]>();
 	private byte[] id;
 	
+	public PropertyContainerImpl(byte[] id){
+		this.id = id;
+	}
+	
 	public byte[] getId() {
 		return id;
 	}

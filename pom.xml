@@ -35,7 +35,6 @@
   <name>Akka Maven2 Repository</name>
   <url>http://www.scalablesolutions.se/akka/repository/ </url>
 </repository>
- 
 <repository>
   <id>Multiverse</id>
   <name>Multiverse Maven2 Repository</name>
@@ -84,6 +83,11 @@
   <groupId>se.scalablesolutions.akka</groupId>
   <artifactId>akka-actor</artifactId>
   <version>1.0-RC1</version>
+</dependency>
+<dependency>
+  <groupId>commons-collections</groupId>
+  <artifactId>commons-collections</artifactId>
+  <version>3.2.1</version>
 </dependency>
 </dependencies>
 </project>
