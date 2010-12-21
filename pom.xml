@@ -31,6 +31,11 @@
   </build>
   <repositories>
 <repository>
+   <id>tinkerpop-repository</id>
+   <name>TinkerPop Maven2 Repository</name>
+   <url>http://tinkerpop.com/maven2</url>
+</repository>
+  <repository>
   <id>Akka</id>
   <name>Akka Maven2 Repository</name>
   <url>http://www.scalablesolutions.se/akka/repository/ </url>
@@ -89,5 +94,16 @@
   <artifactId>commons-collections</artifactId>
   <version>3.2.1</version>
 </dependency>
+<dependency>
+<groupId>org.apache.hbase</groupId>
+<artifactId>hbase</artifactId>
+<version>0.89.20100924</version>
+</dependency>
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+    <artifactId>blueprints</artifactId>
+	  <version>0.3</version>
+	  </dependency>
+
 </dependencies>
 </project>

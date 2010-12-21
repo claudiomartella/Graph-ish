@@ -1,5 +1,6 @@
 package org.acaro.graphish;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,7 +18,6 @@ public class VertexImpl implements Vertex {
 	private HashMap<byte[], Edge> outgoing = new HashMap<byte[], Edge>();
 	private HashMap<byte[], Edge> incoming = new HashMap<byte[], Edge>();
 	private Graphish graph;
-	private GraphStore store;
 	private byte[] id;
 	private int hashCode = -1;
 	
@@ -25,47 +25,47 @@ public class VertexImpl implements Vertex {
 		this.graph = graph;
 		this.id    = id;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof VertexImpl)) return false;
+
+		VertexImpl vertex = (VertexImpl) o;
+
+		return this.id.equals(vertex.id);
+	}
 	
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof VertexImpl)) return false;
+	public int hashCode() {
+		if (hashCode == -1) // only calculate the hash code once
+			hashCode = this.id.hashCode();
 
-        VertexImpl vertex = (VertexImpl) o;
-
-        return this.id.equals(vertex.id);
-    }
+		return hashCode;
+	}
 	
-	@Override
-    public int hashCode() {
-        if (hashCode == -1) // only calculate the hash code once
-            hashCode = this.id.hashCode();
-
-        return hashCode;
-    }
-	
-	public boolean hasProperty(String key) {
-		return graph.getStore().hasProperty(this, key);
+	public boolean hasProperty(String key) throws IOException {
+		return graph.getPropertiesStore().hasProperty(this, key);
 	}
 
-	public byte[] setProperty(String key, byte[] value) {
-		return graph.getStore().setProperty(this, key, value);
+	public byte[] setProperty(String key, byte[] value) throws IOException {
+		return graph.getPropertiesStore().setProperty(this, key, value);
 	}
 
-	public byte[] getProperty(String key) {
-		return graph.getStore().getProperty(this, key);
+	public byte[] getProperty(String key) throws IOException {
+		return graph.getPropertiesStore().getProperty(this, key);
 	}
 
-	public byte[] removeProperty(String key) {
-		return graph.getStore().removeProperty(this, key);
+	public byte[] removeProperty(String key) throws IOException {
+		return graph.getPropertiesStore().removeProperty(this, key);
 	}
 
-	public Iterable<String> getPropertyKeys() {
-		return graph.getStore().getPropertyKeys(this);
+	public Iterable<String> getPropertyKeys() throws IOException {
+		return graph.getPropertiesStore().getPropertyKeys(this);
 	}
 
-	public Iterable<byte[]> getPropertyValues() {
-		return graph.getStore().getPropertyValues(this);
+	public Iterable<byte[]> getPropertyValues() throws IOException {
+		return graph.getPropertiesStore().getPropertyValues(this);
 	}
 
 	public byte[] getId() {

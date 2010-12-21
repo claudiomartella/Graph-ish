@@ -5,11 +5,11 @@ package org.acaro.graphish;
  * 
  */
 
-public class CachedGraphStore implements GraphStore {
-	private GraphStore fallback;
+public class CachedGraphStore implements PropertyStore {
+	private PropertyStore fallback;
 	private GraphStoreCache cache;
 	
-	public CachedGraphStore(GraphStoreCache cache, GraphStore fallback) {
+	public CachedGraphStore(GraphStoreCache cache, PropertyStore fallback) {
 		this.fallback = fallback;
 		this.cache    = cache;
 	}

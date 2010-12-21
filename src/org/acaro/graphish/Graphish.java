@@ -9,15 +9,17 @@ import java.util.UUID;
  */
 
 public class Graphish  {
-	private GraphStore store;
+	private PropertyStore pStore;
+	private GraphStore gStore;
 	
-	public Graphish(GraphStore store) throws IOException {
-		this.store = store;
+	public Graphish(PropertyStore pStore, GraphStore gStore) throws IOException {
+		this.pStore = pStore;
+		this.gStore = gStore;
 	}
 
 	public Edge createEdge(Vertex from, Vertex to, String type) {
 		
-		Edge e = store.createEdge(this, from, to, type);
+		Edge e = gStore.createEdge(this, from, to, type);
 		from.putOutgoingEdge(to, type);
 		
 		return e;
@@ -29,7 +31,7 @@ public class Graphish  {
 	
 	public Vertex createVertex() {
 		
-		Vertex v = store.createVertex(this);
+		Vertex v = gStore.createVertex(this);
 		
 		return v;
 	}
@@ -41,7 +43,11 @@ public class Graphish  {
 		return v;
 	}
 	
-	protected GraphStore getStore(){
-		return this.store;
+	protected PropertyStore getPropertiesStore() {
+		return this.pStore;
+	}
+	
+	protected GraphStore getGraphStore() {
+		return this.gStore;
 	}
 }

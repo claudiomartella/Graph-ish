@@ -9,7 +9,7 @@ import java.util.UUID;
  * TODO: should return copies/duplicates?
  */
 
-public class InMemoryGraphStore implements GraphStore {
+public class InMemoryGraphStore implements PropertyStore {
 	private static final byte[] EDGE_CONJ = { 0x2b };
 	private HashMap<byte[], PropertyContainer> props = new HashMap<byte[], PropertyContainer>();
 	private HashMap<byte[], Vertex> vertices = new HashMap<byte[], Vertex>();
