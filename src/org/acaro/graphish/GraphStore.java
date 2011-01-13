@@ -1,20 +1,24 @@
 package org.acaro.graphish;
 
-import java.io.IOException;
-
 public interface GraphStore {
 
-	public Vertex createVertex(Graphish graph) throws IOException;
+	public Vertex createVertex();
 	
-	public Edge createEdge(Graphish graph, Vertex from, Vertex to, String type) throws IOException;
+	public Vertex getVertex(byte[] id);
 	
-	public Edge putOutgoingEdge(Vertex from, Vertex to, String type) throws IOException;
+	public void removeVertex(Vertex vertex);
+	
+	public Edge createEdge(Vertex from, Vertex to, String type);
+	
+	public void removeEdge(Edge edge);
+	
+	public Edge putOutgoingEdge(Vertex from, Vertex to, String type);
 	
 	public Iterable<Edge> getOutgoingEdges(Vertex vertex);
 	
 	public Iterable<Edge> getOutgoingEdges(Vertex vertex, String type);
 	
-	public Edge putIncomingEdge(Vertex from, Vertex to, String type) throws IOException;
+	public Edge putIncomingEdge(Vertex from, Vertex to, String type);
 	
 	public Iterable<Edge> getIncomingEdges(Vertex vertex);
 	

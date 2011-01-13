@@ -1,7 +1,5 @@
 package org.acaro.graphish;
 
-import java.io.IOException;
-
 /*
  * XXX: Does it make sense to have different methods for vertices and edges? In the end they are both PropertyContainers and have different ids
  * 		Why not refactor accepting a PropertyContainer as a parameter?
@@ -10,17 +8,17 @@ import java.io.IOException;
 public interface PropertyStore {
 	/* Vertex support methods */
 	
-	public boolean hasProperty(PropertyContainer container, String key) throws IOException;
+	public boolean hasProperty(byte[] container, String key);
 
-	public byte[] setProperty(PropertyContainer container, String key, byte[] value) throws IOException;
+	public void setProperty(byte[] container, String key, byte[] value);
 
-	public byte[] getProperty(PropertyContainer container, String key) throws IOException;
+	public byte[] getProperty(byte[] container, String key);
 
-	public byte[] removeProperty(PropertyContainer container, String key) throws IOException;
+	public byte[] removeProperty(byte[] container, String key);
 
-	public Iterable<String> getPropertyKeys(PropertyContainer container) throws IOException;
+	public Iterable<String> getPropertyKeys(byte[] container);
 
-	public Iterable<byte[]> getPropertyValues(PropertyContainer container) throws IOException;
+	public Iterable<byte[]> getPropertyValues(byte[] container);
 	
-	public PropertyContainer getPropertyContainer(PropertyContainer container) throws IOException;
+	public PropertyContainer getPropertyContainer(byte[] container);
 }

@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
-/*
- * 
- */
-
-public class Graphish  {
+public class Graphish {
 	private PropertyStore pStore;
 	private GraphStore gStore;
 	
@@ -18,32 +14,34 @@ public class Graphish  {
 	}
 
 	public Edge createEdge(Vertex from, Vertex to, String type) {
-		
-		Edge e = gStore.createEdge(this, from, to, type);
-		from.putOutgoingEdge(to, type);
-		
-		return e;
+		return gStore.createEdge(from, to, type);
+	}
+	
+	public void removeEdge(Edge edge) {
+		gStore.removeEdge(edge);
 	}
 	
 	public Vertex getVertex(byte[] id) {
-		return vertices.get(id);
+		return gStore.getVertex(id);
 	}
 	
-	public Vertex createVertex() {
-		
-		Vertex v = gStore.createVertex(this);
-		
-		return v;
+	public Vertex addVertex() {
+		return gStore.createVertex();
 	}
 	
-	public Vertex removeVertex(byte[] id) {
-		Vertex v = getVertex(id);
-		
-		// v.die(); should remove itself from neighborhood's adj and persistence layer
-		return v;
+	public void removeVertex(Vertex vertex) {
+		gStore.removeVertex(vertex);
 	}
 	
-	protected PropertyStore getPropertiesStore() {
+	public Iterable<Edge> getEdges() {
+		return gStore.getEdges();	
+	}
+	
+	public Iterable<Vertex> getVertices() {
+		return gStore.getVertices();
+	}
+	
+	protected PropertyStore getPropertyStore() {
 		return this.pStore;
 	}
 	

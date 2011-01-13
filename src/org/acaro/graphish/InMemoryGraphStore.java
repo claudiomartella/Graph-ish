@@ -45,7 +45,7 @@ public class InMemoryGraphStore implements PropertyStore {
 	public PropertyContainer checkAndGet(PropertyContainer container) {
 		PropertyContainer p = props.get(container.getId());
 		if(p == null){
-			throw new ContainerDoesntExist(container);
+			throw new DoesntExist(container);
 		}
 		return p;
 	}

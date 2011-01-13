@@ -18,8 +18,8 @@ public class PropertyContainerImpl implements PropertyContainer {
 		return props.containsKey(key);
 	}
 
-	public byte[] setProperty(String key, byte[] value) {
-		return props.put(key, value);
+	public void setProperty(String key, byte[] value) {
+		props.put(key, value);
 	}
 
 	public byte[] getProperty(String key) {

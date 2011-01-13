@@ -15,9 +15,11 @@ import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.PrefixFilter;
 
 public class TypedEdgesIterator extends EdgesIterator{
-		
+	private String type = null;
+	
 	public TypedEdgesIterator(Vertex v, Direction direction, String type){
 		super(v, direction);
+		this.type = type;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ public class EdgeImpl implements Edge {
 	private Graphish graph;
 	private String type;
 	private byte[] id;
+	private int hashCode = -1;
 	
 	protected EdgeImpl(Graphish graph, byte[] id, Vertex from, Vertex to, String type){
 		this.graph = graph;
@@ -17,29 +18,47 @@ public class EdgeImpl implements Edge {
 	public byte[] getId() {
 		return id;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof EdgeImpl)) return false;
 
-	public boolean hasProperty(String key) {
-		return graph.getStore().hasProperty(this, key);
+		EdgeImpl edge = (EdgeImpl) o;
+
+		return this.id.equals(edge.id);
+	}
+	
+	@Override
+	public int hashCode() {
+		if (hashCode == -1) // only calculate the hash code once
+			hashCode = this.id.hashCode();
+
+		return hashCode;
 	}
 
-	public byte[] setProperty(String key, byte[] value) {
-		return graph.getStore().setProperty(this, key, value);
+	public boolean hasProperty(String key) {
+		return graph.getPropertyStore().hasProperty(id, key);
+	}
+
+	public void setProperty(String key, byte[] value) {
+		graph.getPropertyStore().setProperty(id, key, value);
 	}
 
 	public byte[] getProperty(String key) {
-		return graph.getStore().getProperty(this, key);
+		return graph.getPropertyStore().getProperty(id, key);
 	}
 
 	public byte[] removeProperty(String key) {
-		return graph.getStore().removeProperty(this, key);
+		return graph.getPropertyStore().removeProperty(id, key);
 	}
 
 	public Iterable<String> getPropertyKeys() {
-		return graph.getStore().getPropertyKeys(this);
+		return graph.getPropertyStore().getPropertyKeys(id);
 	}
 
 	public Iterable<byte[]> getPropertyValues() {
-		return graph.getStore().getPropertyValues(this);
+		return graph.getPropertyStore().getPropertyValues(id);
 	}
 
 	public Vertex getFrom() {
@@ -49,13 +68,11 @@ public class EdgeImpl implements Edge {
 	public Vertex getTo() {
 		return to;
 	}
-	/*
-	 	XXX: should check Vertex.equals() instead?
-	 */
+
 	public Vertex getOther(Vertex vertex) {
-		if(vertex == this.to){
+		if(vertex.equals(this.to)){
 			return this.from;
-		} else if(vertex == this.from) {
+		} else if(vertex.equals(this.from)) {
 			return this.to;
 		} else {
 			return null;

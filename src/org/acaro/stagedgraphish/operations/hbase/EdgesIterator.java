@@ -12,16 +12,21 @@ import org.acaro.stagedgraphish.operations.Stages;
 
 public abstract class EdgesIterator implements Iterable<Edge>, Iterator<Edge> {
 	private LinkedList<Edge> resultsCache = new LinkedList<Edge>();
-	private boolean hasNext = true, finished = false;
+	private boolean hasNext = true, finished = false, initialized = false;
 	protected Edge last = null;
 	protected Vertex vertex;
 	protected Direction direction;
+	protected String type;
 	protected int bucketSize = 1000;
 	
 	public EdgesIterator(Vertex v, Direction direction){
 		this.vertex    = v;
 		this.direction = direction;
-		this.hasNext   = fillCache(1);
+	}
+	
+	public EdgesIterator(Vertex v, Direction direction, String type){
+		this(v, direction);
+		this.type = type;
 	}
 	
 	public boolean hasNext(){
@@ -35,7 +40,6 @@ public abstract class EdgesIterator implements Iterable<Edge>, Iterator<Edge> {
 		if(resultsCache.size() == 0){
 			if(!finished){
 				hasNext = fillCache(bucketSize);
-				last    = resultsCache.getLast();
 			} else {
 				hasNext = false;
 			}
@@ -58,7 +62,8 @@ public abstract class EdgesIterator implements Iterable<Edge>, Iterator<Edge> {
 		
 		if(edges.size() != 0){
 			resultsCache.addAll(edges);
-			ret = true;
+			last = resultsCache.getLast();
+			ret  = true;
 			if(edges.size() < size)	finished = true;	
 		}
 		
