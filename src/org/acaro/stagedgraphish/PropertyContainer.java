@@ -1,0 +1,18 @@
+package org.acaro.stagedgraphish;
+
+public interface PropertyContainer {
+
+	public byte[] getId();
+	
+	public boolean hasProperty(String key);
+	
+	public void setProperty(String key, byte[] value);
+	
+	public byte[] getProperty(String key);
+	
+	public byte[] removeProperty(String key);
+	
+	public Iterable<String> getPropertyKeys();
+	
+	public Iterable<byte[]> getPropertyValues();
+}
