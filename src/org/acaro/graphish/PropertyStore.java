@@ -1,5 +1,7 @@
 package org.acaro.graphish;
 
+import org.acaro.stagedgraphish.PropertyContainer;
+
 /*
  * XXX: Does it make sense to have different methods for vertices and edges? In the end they are both PropertyContainers and have different ids
  * 		Why not refactor accepting a PropertyContainer as a parameter?

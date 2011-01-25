@@ -89,7 +89,10 @@ public class EdgeImpl implements Edge {
 	}
 
 	public Iterable<byte[]> getPropertyValues(){
-
 		return Stages.getStore().addOperationEdgeGetPropertyValues(this).get();
+	}
+
+	public void delete() {
+		return Stages.getStore().addOperationRemoveEdge(this).get();
 	}
 }

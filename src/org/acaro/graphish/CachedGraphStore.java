@@ -1,5 +1,7 @@
 package org.acaro.graphish;
 
+import org.acaro.stagedgraphish.PropertyContainer;
+
 /*
  * Read/Write Through Cache with Storage fallback
  * 

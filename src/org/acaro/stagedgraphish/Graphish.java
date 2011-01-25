@@ -1,51 +1,26 @@
 package org.acaro.stagedgraphish;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.UUID;
+import org.acaro.stagedgraphish.operations.Stages;
 
 public class Graphish {
-	private PropertyStore pStore;
-	private GraphStore gStore;
 	
-	public Graphish(PropertyStore pStore, GraphStore gStore) throws IOException {
-		this.pStore = pStore;
-		this.gStore = gStore;
+	public Vertex getVertex(byte[] id){
+		return Stages.getStore().addOperationGetVertex(id).get();
 	}
-
-	public Edge createEdge(Vertex from, Vertex to, String type) {
-		return gStore.createEdge(from, to, type);
-	}
-	
-	public void removeEdge(Edge edge) {
-		gStore.removeEdge(edge);
-	}
-	
-	public Vertex getVertex(byte[] id) {
-		return gStore.getVertex(id);
-	}
-	
+		
 	public Vertex addVertex() {
-		return gStore.createVertex();
+		return Stages.getStore().addOperationCreateVertex().get();
 	}
 	
-	public void removeVertex(Vertex vertex) {
-		gStore.removeVertex(vertex);
+	public Edge getEdge(byte[] id){
+		return Stages.getStore().addOperationGetEdge(id).get();
 	}
 	
-	public Iterable<Edge> getEdges() {
-		return gStore.getEdges();	
+	public Iterable<Edge> getEdges(){
+		return Stages.getStore().getIterableEdges();
 	}
 	
-	public Iterable<Vertex> getVertices() {
-		return gStore.getVertices();
-	}
-	
-	protected PropertyStore getPropertyStore() {
-		return this.pStore;
-	}
-	
-	protected GraphStore getGraphStore() {
-		return this.gStore;
+	public Iterable<Vertex> getVertices(){
+		return Stages.getStore().getIterableVertices();
 	}
 }

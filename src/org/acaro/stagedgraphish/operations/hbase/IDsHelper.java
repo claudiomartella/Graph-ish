@@ -1,8 +1,10 @@
 package org.acaro.stagedgraphish.operations.hbase;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.acaro.stagedgraphish.Direction;
@@ -11,21 +13,21 @@ import org.acaro.stagedgraphish.Vertex;
 import org.apache.hadoop.hbase.util.Bytes;
 
 public class IDsHelper {
-	final private static byte[] EDGE_CONJ = { 0x2b };
-	final private static byte[] DIR_IN    = { 0x49 };
-	final private static byte[] DIR_OUT   = { 0x4f };
+	final private static byte[] EDGE_CONJ = { 0x2b }; // _
+	final private static byte[] DIR_IN    = { 0x49 }; // I
+	final private static byte[] DIR_OUT   = { 0x4f }; // O
 	
-	static byte[] createVertexId(){
+	public static byte[] createVertexId(){
 		UUID id = UUID.randomUUID();
 		return org.acaro.graphish.Bytes.fromUuid(id).toByteArray();
 	}
 	
-	static byte[] createEdgeId(){
+	public static byte[] createEdgeId(){
 		UUID id = UUID.randomUUID();
 		return org.acaro.graphish.Bytes.fromUuid(id).toByteArray();
 	}
 	
-	static void incrementKey(byte[] id, int index){
+	public static void incrementKey(byte[] id, int index){
 		if(id[index] == Byte.MAX_VALUE){
 			id[index] = 0;
 			if(index > 0){
@@ -36,7 +38,7 @@ public class IDsHelper {
 		}
 	}
 	
-	static byte[] createRecordId(List<byte[]> tokens){
+	public static byte[] createRecordId(List<byte[]> tokens){
 		int totalLength = 0;
 		byte[] id;
 		
@@ -54,8 +56,8 @@ public class IDsHelper {
 		return id;
 	}
 	
-	static List<byte[]> createEdgeLabels(Vertex from, Vertex to, String type){
-		List<byte[]> labels = new ArrayList<byte[]>(2);
+	public static Map<Labels, byte[]> createEdgeLabels(Vertex from, Vertex to, String type){
+		Map<Labels, byte[]> labels = new EnumMap<Labels, byte[]>(Labels.class);
 		List<byte[]> args   = new ArrayList<byte[]>(7);
 		
 		args.add(from.getId());
@@ -66,7 +68,7 @@ public class IDsHelper {
 		args.add(EDGE_CONJ);
 		args.add(Bytes.toBytes(type));
 		
-		labels.add(createRecordId(args));
+		labels.put(Labels.DIRECT, createRecordId(args));
 		
 		args.clear();
 		args.add(to.getId());
@@ -77,16 +79,16 @@ public class IDsHelper {
 		args.add(EDGE_CONJ);
 		args.add(Bytes.toBytes(type));
 		
-		labels.add(createRecordId(args));
+		labels.put(Labels.INVERTED, createRecordId(args));
 		
 		return labels;
 	}
 	
-	static List<byte[]> createEdgeLabels(Edge edge){
+	public static Map<Labels, byte[]> createEdgeLabels(Edge edge){
 		return createEdgeLabels(edge.getFrom(), edge.getTo(), edge.getType());
 	}
 	
-	static byte[] createEdgePrefix(Vertex v, Direction direction){
+	public static byte[] createEdgePrefix(Vertex v, Direction direction){
 		List<byte[]> args = new LinkedList<byte[]>();
 		
 		args.add(v.getId());
@@ -96,7 +98,7 @@ public class IDsHelper {
 		return createRecordId(args);
 	}
 	
-	static byte[] createTypedEdgePrefix(Vertex v, Direction direction, String type){
+	public static byte[] createTypedEdgePrefix(Vertex v, Direction direction, String type){
 		List<byte[]> args = new LinkedList<byte[]>();
 		
 		args.add(v.getId());

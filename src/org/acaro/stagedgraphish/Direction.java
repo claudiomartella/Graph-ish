@@ -1,5 +1,5 @@
 package org.acaro.stagedgraphish;
 
 public enum Direction {
-	IN, OUT, ANY;
+	IN, OUT;
 }

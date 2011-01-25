@@ -2,6 +2,7 @@ package org.acaro.graphish;
 
 import java.util.Map;
 
+import org.acaro.stagedgraphish.PropertyContainer;
 import org.apache.commons.collections.map.LRUMap;
 
 /*

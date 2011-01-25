@@ -13,4 +13,6 @@ public interface Vertex extends PropertyContainer {
 	public Iterable<Edge> getIncomingEdges();
 	
 	public Iterable<Edge> getIncomingEdges(String type);
+
+	public void delete();
 }

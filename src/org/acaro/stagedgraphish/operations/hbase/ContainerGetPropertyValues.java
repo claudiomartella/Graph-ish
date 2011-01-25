@@ -1,8 +1,8 @@
 package org.acaro.stagedgraphish.operations.hbase;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.acaro.stagedgraphish.StorageException;
@@ -10,7 +10,7 @@ import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Result;
 
-public class ContainerGetPropertyValues implements Callable<Iterable<byte[]>> {
+public class ContainerGetPropertyValues implements Callable<List<byte[]>> {
 	private byte[] family;
 	private byte[] id;
 	
@@ -19,9 +19,9 @@ public class ContainerGetPropertyValues implements Callable<Iterable<byte[]>> {
 		this.id     = id;
 	}
 	
-	public Iterable<byte[]> call() throws Exception {
+	public List<byte[]> call() throws Exception {
 		HTableInterface table = HBaseStore.getTable();
-		Collection<byte[]> values = new HashSet<byte[]>();
+		List<byte[]> values = new ArrayList<byte[]>();
 		
 		try {
 			Get g = new Get(id);

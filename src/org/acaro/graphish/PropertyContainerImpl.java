@@ -2,6 +2,8 @@ package org.acaro.graphish;
 
 import java.util.HashMap;
 
+import org.acaro.stagedgraphish.PropertyContainer;
+
 public class PropertyContainerImpl implements PropertyContainer {
 	private HashMap<String, byte[]> props = new HashMap<String, byte[]>();
 	private byte[] id;

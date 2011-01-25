@@ -1,14 +1,18 @@
 package org.acaro.stagedgraphish.operations.hbase;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.acaro.stagedgraphish.Direction;
 import org.acaro.stagedgraphish.Edge;
 import org.acaro.stagedgraphish.StorageException;
 import org.acaro.stagedgraphish.Vertex;
+import org.acaro.stagedgraphish.operations.ContainerFilter;
+import org.acaro.stagedgraphish.operations.EdgeFilter;
 import org.acaro.stagedgraphish.operations.StorageStage;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -97,14 +101,14 @@ public class HBaseStore implements StorageStage {
 		return es.submit(operation);
 	}
 
-	public Future<Iterable<String>> addOperationVertexGetPropertyKeys(Vertex v) {
-		Callable<Iterable<String>> operation = new ContainerGetPropertyKeys(VPROPERTIES_FAM, v.getId());
+	public Future<List<String>> addOperationVertexGetPropertyKeys(Vertex v) {
+		Callable<List<String>> operation = new ContainerGetPropertyKeys(VPROPERTIES_FAM, v.getId());
 
 		return es.submit(operation);
 	}
 
-	public Future<Iterable<byte[]>> addOperationVertexGetPropertyValues(Vertex v) {
-		Callable<Iterable<byte[]>> operation = new ContainerGetPropertyValues(VPROPERTIES_FAM, v.getId());
+	public Future<List<byte[]>> addOperationVertexGetPropertyValues(Vertex v) {
+		Callable<List<byte[]>> operation = new ContainerGetPropertyValues(VPROPERTIES_FAM, v.getId());
 
 		return es.submit(operation);
 	}
@@ -116,7 +120,7 @@ public class HBaseStore implements StorageStage {
 	}
 
 	public Future<Void> addOperationEdgeSetProperty(Edge e, String key,
-			byte[] value) {
+			final byte[] value) {
 		Callable<Void> operation = new ContainerSetProperty(EPROPERTIES_FAM, e.getId(), key, value);
 
 		return es.submit(operation);
@@ -134,14 +138,14 @@ public class HBaseStore implements StorageStage {
 		return es.submit(operation);
 	}
 
-	public Future<Iterable<String>> addOperationEdgeGetPropertyKeys(Edge e) {
-		Callable<Iterable<String>> operation = new ContainerGetPropertyKeys(EPROPERTIES_FAM, e.getId());
+	public Future<List<String>> addOperationEdgeGetPropertyKeys(Edge e) {
+		Callable<List<String>> operation = new ContainerGetPropertyKeys(EPROPERTIES_FAM, e.getId());
 
 		return es.submit(operation);
 	}
 
-	public Future<Iterable<byte[]>> addOperationEdgeGetPropertyValues(Edge e) {
-		Callable<Iterable<byte[]>> operation = new ContainerGetPropertyValues(EPROPERTIES_FAM, e.getId());
+	public Future<List<byte[]>> addOperationEdgeGetPropertyValues(Edge e) {
+		Callable<List<byte[]>> operation = new ContainerGetPropertyValues(EPROPERTIES_FAM, e.getId());
 
 		return es.submit(operation);
 	}
@@ -153,44 +157,98 @@ public class HBaseStore implements StorageStage {
 		return es.submit(operation);
 	}
 
-	public Future<Iterable<Edge>> addOperationVertexGetOutgoingEdges(Vertex v,
-			String type) {
-		Callable<Iterable<Edge>> operation = new VertexGetOutgoingEdges(v, type);
-		
-		return es.submit(operation);
-	}
-
 	public Future<Edge> addOperationVertexPutIncomingEdge(Vertex v,
 			Vertex other, String type) {
 		Callable<Edge> operation = new CreateEdge(other, v, type);
 		
 		return es.submit(operation);
 	}
-
-	public Future<Iterable<Edge>> addOperationVertexGetIncomingEdges(Vertex v,
-			String type) {
-		Callable<Iterable<Edge>> operation = new VertexGetIncomingEdges(v, type);
+	
+	public Future<List<Edge>> addOperationGetNeighbors(EdgeFilter filter) {
+		Callable<List<Edge>> operation = new GetNeighbors(filter);
+		
+		return es.submit(operation);
+	}
+	
+	public Future<List<Edge>> addOperationGetEdges(ContainerFilter filter) {
+		Callable<List<Edge>> operation = new GetEdges(filter);
+		
+		return es.submit(operation);
+	}
+	
+	public Future<List<Vertex>> addOperationGetVertices(ContainerFilter filter) {
+		Callable<List<Vertex>> operation = new GetVertices(filter);
 		
 		return es.submit(operation);
 	}
 
 	public Iterable<String> getIterableVertexPropertyKeys(Vertex v) {
-		// TODO Auto-generated method stub
-		return null;
+		return addOperationVertexGetPropertyKeys(v).get();
 	}
 
 	public Iterable<byte[]> getIterableVertexPropertyValues(Vertex v) {
-		// TODO Auto-generated method stub
-		return null;
+		return addOperationVertexGetPropertyValues(v).get();
+	}
+	
+	public Iterable<String> getIterableEdgePropertyKeys(Edge e) {
+		return addOperationEdgeGetPropertyKeys(e).get();
+	}
+
+	public Iterable<byte[]> getIterableEdgePropertyValues(Edge e) {
+		return addOperationEdgeGetPropertyValues(e).get();
 	}
 
 	public Iterable<Edge> getIterableVertexIncomingEdges(Vertex v, String type) {
-		// TODO Auto-generated method stub
-		return null;
+		return new TypedNeighborhoodIterator(v, Direction.IN, type);
 	}
 
 	public Iterable<Edge> getIterableVertexOutgoingEdges(Vertex v, String type) {
-		// TODO Auto-generated method stub
-		return null;
+		return new TypedNeighborhoodIterator(v, Direction.OUT, type);
+	}
+
+	public Iterable<Edge> getIterableVertexIncomingEdges(Vertex v) {
+		return new UntypedNeighborhoodIterator(v, Direction.IN);
+	}
+
+	public Iterable<Edge> getIterableVertexOutgoingEdges(Vertex v) {
+		return new UntypedNeighborhoodIterator(v, Direction.OUT);
+	}
+	
+	public Iterable<Edge> getIterableEdges() {
+		return new EdgesIterator();
+	}
+
+	public Iterable<Vertex> getIterableVertices() {
+		return new VerticesIterator();
+	}
+	
+	public Future<Vertex> addOperationCreateVertex() {
+		Callable<Vertex> operation = new CreateVertex();
+		
+		return es.submit(operation);
+	}
+
+	public Future<Vertex> addOperationGetVertex(byte[] id) {
+		Callable<Vertex> operation = new GetVertex(id);
+		
+		return es.submit(operation);
+	}
+
+	public Future<Void> addOperationRemoveVertex(Vertex v) {
+		Callable<Void> operation = new RemoveVertex(v);
+		
+		return es.submit(operation);
+	}
+	
+	public Future<Void> addOperationRemoveEdge(Edge e) {
+		Callable<Void> operation = new RemoveEdge(e);
+		
+		return es.submit(operation);
+	}
+
+	public Future<Edge> addOperationGetEdge(byte[] id) {
+		Callable<Edge> operation = new GetEdge(id);
+		
+		return es.submit(operation);
 	}
 }

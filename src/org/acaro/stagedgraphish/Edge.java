@@ -9,4 +9,6 @@ public interface Edge extends PropertyContainer {
 	public Vertex getOther(Vertex vertex);
 	
 	public String getType();
+	
+	public void delete();
 }

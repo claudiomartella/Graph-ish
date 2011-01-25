@@ -3,7 +3,6 @@ package org.acaro.stagedgraphish.operations.hbase;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
-import org.acaro.stagedgraphish.DoesntExist;
 import org.acaro.stagedgraphish.StorageException;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
@@ -27,9 +26,6 @@ public class ContainerSetProperty implements Callable<Void> {
 		HTableInterface table = HBaseStore.getTable();
 		
 		try {
-			if(!HBaseStore.recordExists(table, id)){
-				throw new DoesntExist(id);
-			}
 			Put p = new Put(id);
 			p.add(family, property, value);
 			table.put(p);

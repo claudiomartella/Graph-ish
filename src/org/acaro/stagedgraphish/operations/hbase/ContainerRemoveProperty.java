@@ -3,7 +3,6 @@ package org.acaro.stagedgraphish.operations.hbase;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
-import org.acaro.stagedgraphish.DoesntExist;
 import org.acaro.stagedgraphish.StorageException;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Get;

@@ -1,5 +1,7 @@
 package org.acaro.graphish;
 
+import org.acaro.stagedgraphish.PropertyContainer;
+
 public interface Vertex extends PropertyContainer {
 	
 	public Edge putOutgoingEdge(Vertex other, String type);

@@ -3,6 +3,7 @@ package org.acaro.stagedgraphish.operations.hbase;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.acaro.stagedgraphish.Edge;
@@ -30,33 +31,34 @@ public class CreateEdge implements Callable<Edge> {
 		Put p;
 		HTableInterface table = HBaseStore.getTable();
 		List<Put> puts = new ArrayList<Put>();
-		List<byte[]> labels = IDsHelper.createEdgeLabels(from, to, type);
+		Map<Labels, byte[]> labels = IDsHelper.createEdgeLabels(from, to, type);
 		
 		try {
-			if(HBaseStore.recordExists(table, labels.get(0))){ // does it make sense to check for the other label?
+			if(HBaseStore.recordExists(table, labels.get(Labels.DIRECT))){ // does it make sense to check for the other label?
 				throw new EdgeExists(from, to, type);
 			}
+			byte[] t = Bytes.toBytes(type);
 			do {
 				id = IDsHelper.createEdgeId();
 				p = new Put(id);
 				p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.ID_QUAL, id);
 				p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.FROM_QUAL, from.getId());
 				p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.TO_QUAL, to.getId());
-				p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.TYPE_QUAL, Bytes.toBytes(type));
+				p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.TYPE_QUAL, t);
 			} while(!table.checkAndPut(id, HBaseStore.GRAPHMETA_FAM, HBaseStore.ID_QUAL, null, p));
 			
-			p = new Put(labels.get(0));
+			p = new Put(labels.get(Labels.DIRECT));
 			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.ID_QUAL, id);
 			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.FROM_QUAL, from.getId());
 			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.TO_QUAL, to.getId());
-			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.TYPE_QUAL, Bytes.toBytes(type));
+			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.TYPE_QUAL, t);
 			puts.add(p);
 			
-			p = new Put(labels.get(1));
+			p = new Put(labels.get(Labels.INVERTED));
 			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.ID_QUAL, id);
 			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.FROM_QUAL, from.getId());
 			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.TO_QUAL, to.getId());
-			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.TYPE_QUAL, Bytes.toBytes(type));
+			p.add(HBaseStore.GRAPHMETA_FAM, HBaseStore.TYPE_QUAL, t);
 			puts.add(p);
 			table.put(puts);
 		} catch(IOException e){

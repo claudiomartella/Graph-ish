@@ -11,7 +11,7 @@ import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 
-public class ContainerGetPropertyKeys implements Callable<Iterable<String>> {
+public class ContainerGetPropertyKeys implements Callable<List<String>> {
 	private byte[] family;
 	private byte[] id;
 	
@@ -20,7 +20,7 @@ public class ContainerGetPropertyKeys implements Callable<Iterable<String>> {
 		this.id     = id;
 	}
 	
-	public Iterable<String> call() throws Exception {
+	public List<String> call() throws Exception {
 		HTableInterface table = HBaseStore.getTable();
 		List<String> keys = new LinkedList<String>();
 		

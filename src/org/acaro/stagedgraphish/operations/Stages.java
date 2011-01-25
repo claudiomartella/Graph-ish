@@ -1,6 +1,5 @@
 package org.acaro.stagedgraphish.operations;
 
-import org.acaro.stagedgraphish.OldHBaseStore;
 import org.acaro.stagedgraphish.operations.hbase.HBaseStore;
 
 public class Stages {

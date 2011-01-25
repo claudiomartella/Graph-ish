@@ -3,6 +3,8 @@ package org.acaro.graphish;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.acaro.stagedgraphish.PropertyContainer;
+
 /*
  * Write stuff to memory and that's it
  * 

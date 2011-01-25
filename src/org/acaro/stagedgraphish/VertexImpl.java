@@ -9,7 +9,7 @@ public class VertexImpl implements Vertex {
 	private byte[] id;
 	private int hashCode = -1;
 	
-	protected VertexImpl(byte[] id){
+	public VertexImpl(byte[] id){
 		this.id = id;
 	}
 
@@ -75,12 +75,10 @@ public class VertexImpl implements Vertex {
 	}
 
 	public Iterable<Edge> getOutgoingEdges(){
-
 		return Stages.getStore().getIterableVertexOutgoingEdges(this, null);
 	}
 
 	public Iterable<Edge> getOutgoingEdges(String type){
-		
 		return Stages.getStore().getIterableVertexOutgoingEdges(this, type);
 	}
 	
@@ -91,12 +89,14 @@ public class VertexImpl implements Vertex {
 	}
 
 	public Iterable<Edge> getIncomingEdges(){
-
 		return Stages.getStore().getIterableVertexIncomingEdges(this, null);
 	}
 
 	public Iterable<Edge> getIncomingEdges(String type){
-
 		return Stages.getStore().getIterableVertexIncomingEdges(this, type);
+	}
+
+	public void delete() {
+		Stages.getStore().addOperationRemoveVertex(this).get();
 	}
 }
