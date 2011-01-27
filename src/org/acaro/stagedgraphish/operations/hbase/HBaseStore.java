@@ -36,7 +36,7 @@ public final class HBaseStore implements StorageStage {
 	final protected static byte[] ID_QUAL   = Bytes.toBytes("id");
 	final protected static byte[] TO_QUAL   = Bytes.toBytes("to");
 	
-	private static HTablePool pool = new HTablePool();
+	private HTablePool pool = new HTablePool();
 	private ExecutorService es = Executors.newFixedThreadPool(5);
 	
 	private static class HBaseStoreHolder {
@@ -70,11 +70,11 @@ public final class HBaseStore implements StorageStage {
 		return HBaseStoreHolder.INSTANCE;
 	}
 	
-	public static HTableInterface getTable(){
+	public HTableInterface getTable(){
 		return pool.getTable(GRAPHISH_TABLE);
 	}
 	
-	public static void putTable(HTableInterface table){
+	public void putTable(HTableInterface table){
 		pool.putTable(table);
 	}
 	

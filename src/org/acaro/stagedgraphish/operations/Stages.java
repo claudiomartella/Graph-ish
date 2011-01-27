@@ -2,14 +2,11 @@ package org.acaro.stagedgraphish.operations;
 
 import org.acaro.stagedgraphish.operations.hbase.HBaseStore;
 
-public class Stages {
-	static StorageStage store;
+public final class Stages {
 	
-	static {
-		store = new HBaseStore();
-	}
+	private Stages() {}
 	
 	public static StorageStage getStore(){
-		return store;
+		return HBaseStore.getInstance();
 	}
 }
