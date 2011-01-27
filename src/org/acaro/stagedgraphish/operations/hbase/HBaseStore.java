@@ -21,6 +21,8 @@ import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.HTablePool;
+import org.apache.hadoop.hbase.io.hfile.Compression.Algorithm;
+import org.apache.hadoop.hbase.regionserver.StoreFile.BloomType;
 import org.apache.hadoop.hbase.util.Bytes;
 
 public final class HBaseStore implements StorageStage {
@@ -49,9 +51,21 @@ public final class HBaseStore implements StorageStage {
 			if(!admin.tableExists(GRAPHISH_TABLE)){
 				HTableDescriptor table = new HTableDescriptor(GRAPHISH_TABLE);
 				HColumnDescriptor family1 = new HColumnDescriptor(EPROPERTIES_FAM);
+				family1.setBlockCacheEnabled(true);
+				family1.setBloomFilterType(BloomType.ROWCOL);
+				family1.setCompressionType(Algorithm.GZ);
 				HColumnDescriptor family2 = new HColumnDescriptor(VPROPERTIES_FAM);
+				family2.setBlockCacheEnabled(true);
+				family2.setBloomFilterType(BloomType.ROWCOL);
+				family2.setCompressionType(Algorithm.GZ);
 				HColumnDescriptor family3 = new HColumnDescriptor(GRAPHMETA_FAM);
+				family3.setBlockCacheEnabled(true);
+				family3.setBloomFilterType(BloomType.ROWCOL);
+				family3.setCompressionType(Algorithm.GZ);
 				HColumnDescriptor family4 = new HColumnDescriptor(EDGES_FAM);
+				family4.setBlockCacheEnabled(true);
+				family4.setBloomFilterType(BloomType.ROW);
+				family4.setCompressionType(Algorithm.GZ);
 				table.addFamily(family1);
 				table.addFamily(family2);
 				table.addFamily(family3);
@@ -191,19 +205,19 @@ public final class HBaseStore implements StorageStage {
 	}
 
 	public Iterable<String> getIterableVertexPropertyKeys(Vertex v) {
-		return addOperationVertexGetPropertyKeys(v).get();
+		return new VertexPropertyKeysIterator(v);
 	}
 
 	public Iterable<byte[]> getIterableVertexPropertyValues(Vertex v) {
-		return addOperationVertexGetPropertyValues(v).get();
+		return new VertexPropertyValuesIterator(v);
 	}
 	
 	public Iterable<String> getIterableEdgePropertyKeys(Edge e) {
-		return addOperationEdgeGetPropertyKeys(e).get();
+		return new EdgePropertyKeysIterator(e);
 	}
 
 	public Iterable<byte[]> getIterableEdgePropertyValues(Edge e) {
-		return addOperationEdgeGetPropertyValues(e).get();
+		return new EdgePropertyValuesIterator(e);
 	}
 
 	public Iterable<Edge> getIterableVertexIncomingEdges(Vertex v, String type) {
