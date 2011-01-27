@@ -23,7 +23,7 @@ import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.hadoop.hbase.util.Bytes;
 
-public class HBaseStore implements StorageStage {
+public final class HBaseStore implements StorageStage {
 	final protected static byte[] GRAPHISH_TABLE  = Bytes.toBytes("Graphish");
 	// column families
 	final protected static byte[] VPROPERTIES_FAM = Bytes.toBytes("VertexProperties");
@@ -39,7 +39,11 @@ public class HBaseStore implements StorageStage {
 	private static HTablePool pool = new HTablePool();
 	private ExecutorService es = Executors.newFixedThreadPool(5);
 	
-	static {
+	private static class HBaseStoreHolder {
+		public static final HBaseStore INSTANCE = new HBaseStore();
+	}
+	
+	private HBaseStore(){
 		try {
 			HBaseAdmin admin = new HBaseAdmin(HBaseConfiguration.create());
 			if(!admin.tableExists(GRAPHISH_TABLE)){
@@ -60,6 +64,10 @@ public class HBaseStore implements StorageStage {
 		} catch(IOException e){
 			throw new StorageException(e);
 		}	
+	}
+	
+	public static HBaseStore getInstance() {
+		return HBaseStoreHolder.INSTANCE;
 	}
 	
 	public static HTableInterface getTable(){
