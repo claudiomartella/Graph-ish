@@ -19,7 +19,7 @@ public class RemoveEdge implements Callable<Void> {
 	}
 	
 	public Void call() throws Exception {
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		List<Delete> deletes = new ArrayList<Delete>();
 		
 		try {
@@ -31,7 +31,7 @@ public class RemoveEdge implements Callable<Void> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return null;

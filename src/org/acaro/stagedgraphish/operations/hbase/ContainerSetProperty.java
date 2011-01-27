@@ -23,7 +23,7 @@ public class ContainerSetProperty implements Callable<Void> {
 	
 	public Void call() throws Exception {
 		byte[] property = Bytes.toBytes(key);
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		
 		try {
 			Put p = new Put(id);
@@ -32,7 +32,7 @@ public class ContainerSetProperty implements Callable<Void> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return null;

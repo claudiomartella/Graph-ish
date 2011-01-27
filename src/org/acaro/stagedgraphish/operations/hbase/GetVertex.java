@@ -17,7 +17,7 @@ public class GetVertex implements Callable<Vertex> {
 	}
 	
 	public Vertex call() throws Exception {
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		
 		try {
 			if(!HBaseStore.recordExists(table, id)){
@@ -26,7 +26,7 @@ public class GetVertex implements Callable<Vertex> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return new VertexImpl(id);

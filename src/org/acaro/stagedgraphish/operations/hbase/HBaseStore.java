@@ -70,15 +70,15 @@ public final class HBaseStore implements StorageStage {
 		return HBaseStoreHolder.INSTANCE;
 	}
 	
-	public HTableInterface getTable(){
+	HTableInterface getTable(){
 		return pool.getTable(GRAPHISH_TABLE);
 	}
 	
-	public void putTable(HTableInterface table){
+	void putTable(HTableInterface table){
 		pool.putTable(table);
 	}
 	
-	public static boolean recordExists(HTableInterface table, byte[] id) throws IOException {
+	static boolean recordExists(HTableInterface table, byte[] id) throws IOException {
 		Get g = new Get(id);
 
 		return table.exists(g);

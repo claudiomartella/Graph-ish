@@ -29,7 +29,7 @@ public class CreateEdge implements Callable<Edge> {
 	public Edge call() throws Exception {
 		byte[] id;
 		Put p;
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		List<Put> puts = new ArrayList<Put>();
 		Map<Labels, byte[]> labels = IDsHelper.createEdgeLabels(from, to, type);
 		
@@ -64,7 +64,7 @@ public class CreateEdge implements Callable<Edge> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return new EdgeImpl(id, from, to, type);

@@ -12,7 +12,7 @@ import org.apache.hadoop.hbase.client.Put;
 public class CreateVertex implements Callable<Vertex> {
 
 	public Vertex call() throws Exception {
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		byte[] id;
 		Put p;
 		
@@ -25,7 +25,7 @@ public class CreateVertex implements Callable<Vertex> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return new VertexImpl(id);

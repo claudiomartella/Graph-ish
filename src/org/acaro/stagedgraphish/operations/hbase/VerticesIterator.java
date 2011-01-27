@@ -16,6 +16,6 @@ public class VerticesIterator extends ContainerIterator<Vertex> {
 		if(last != null) filter.setLast(last);
 		filter.setSize(size);
 		
-		return Stages.getStore().addOperationGetEdges(filter).get();	
+		return Stages.getStore().addOperationGetVertices(filter).get();	
 	}
 }

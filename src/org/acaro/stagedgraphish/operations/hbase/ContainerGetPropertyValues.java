@@ -20,7 +20,7 @@ public class ContainerGetPropertyValues implements Callable<List<byte[]>> {
 	}
 	
 	public List<byte[]> call() throws Exception {
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		List<byte[]> values = new ArrayList<byte[]>();
 		
 		try {
@@ -32,7 +32,7 @@ public class ContainerGetPropertyValues implements Callable<List<byte[]>> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return values;

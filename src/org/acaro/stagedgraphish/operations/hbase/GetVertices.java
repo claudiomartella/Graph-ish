@@ -25,7 +25,7 @@ public class GetVertices implements Callable<List<Vertex>> {
 		LinkedList<Vertex> vertices = new LinkedList<Vertex>();
 		Result[] results;
 		ResultScanner scanner = null;
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 	
 		try {
 			Scan scan = getScan(filter);
@@ -40,7 +40,7 @@ public class GetVertices implements Callable<List<Vertex>> {
 			throw new StorageException(e);
 		} finally {
 			scanner.close();
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return vertices;

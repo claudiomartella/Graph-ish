@@ -16,14 +16,14 @@ public class RemoveVertex implements Callable<Void> {
 	}
 	
 	public Void call() throws Exception {
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 
 		try {
 			table.delete(new Delete(v.getId()));
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return null;

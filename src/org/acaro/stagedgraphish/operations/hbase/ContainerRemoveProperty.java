@@ -24,7 +24,7 @@ public class ContainerRemoveProperty implements Callable<byte[]> {
 	public byte[] call() throws Exception {
 		byte[] ret = null;
 		byte[] property = Bytes.toBytes(key);
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		
 		try {
 			Get g = new Get(id);
@@ -39,7 +39,7 @@ public class ContainerRemoveProperty implements Callable<byte[]> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return ret;

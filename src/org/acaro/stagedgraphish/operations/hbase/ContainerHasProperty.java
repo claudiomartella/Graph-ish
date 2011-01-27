@@ -21,7 +21,7 @@ public class ContainerHasProperty implements Callable<Boolean> {
 	
 	public Boolean call() throws Exception {
 		boolean ret;
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		
 		try {
 			Get g = new Get(id);
@@ -30,7 +30,7 @@ public class ContainerHasProperty implements Callable<Boolean> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return ret;

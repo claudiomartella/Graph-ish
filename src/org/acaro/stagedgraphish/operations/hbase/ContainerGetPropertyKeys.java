@@ -21,7 +21,7 @@ public class ContainerGetPropertyKeys implements Callable<List<String>> {
 	}
 	
 	public List<String> call() throws Exception {
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		List<String> keys = new LinkedList<String>();
 		
 		try {
@@ -35,7 +35,7 @@ public class ContainerGetPropertyKeys implements Callable<List<String>> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return keys;

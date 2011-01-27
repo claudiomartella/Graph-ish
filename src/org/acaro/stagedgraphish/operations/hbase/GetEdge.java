@@ -21,7 +21,7 @@ public class GetEdge implements Callable<Edge> {
 	}
 	
 	public Edge call() throws Exception {
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 		Edge edge;
 		
 		try {
@@ -39,7 +39,7 @@ public class GetEdge implements Callable<Edge> {
 		} catch(IOException e){
 			throw new StorageException(e);
 		} finally {
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return edge;

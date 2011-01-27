@@ -30,7 +30,7 @@ public class GetNeighbors implements Callable<List<Edge>> {
 		LinkedList<Edge> edges = new LinkedList<Edge>();
 		Result[] results;
 		ResultScanner scanner = null;
-		HTableInterface table = HBaseStore.getTable();
+		HTableInterface table = HBaseStore.getInstance().getTable();
 	
 		try {
 			Scan scan = getScan(filter);
@@ -49,7 +49,7 @@ public class GetNeighbors implements Callable<List<Edge>> {
 			throw new StorageException(e);
 		} finally {
 			scanner.close();
-			HBaseStore.putTable(table);
+			HBaseStore.getInstance().putTable(table);
 		}
 		
 		return edges;
