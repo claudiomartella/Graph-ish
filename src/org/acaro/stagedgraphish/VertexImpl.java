@@ -1,6 +1,5 @@
 package org.acaro.stagedgraphish;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.acaro.stagedgraphish.operations.Stages;
@@ -36,28 +35,28 @@ public class VertexImpl implements Vertex {
 		return this.id;
 	}
 	
-	public boolean hasProperty(String key){
-		if(key == null) return false;
+	public Future<Boolean> hasProperty(String key){
+		if(key == null) throw new IllegalArgumentException("argument is null");
 		
-		return Stages.getStore().addOperationVertexHasProperty(this, key).get();
+		return Stages.getStore().addOperationVertexHasProperty(this, key);
 	}
 	
-	public void setProperty(String key, byte[] value){
-		if(key == null || value == null) return;
+	public Future<Void> setProperty(String key, byte[] value){
+		if(key == null || value == null) throw new IllegalArgumentException("argument is null");
 	
-		Stages.getStore().addOperationVertexSetProperty(this, key, value).get();
+		return Stages.getStore().addOperationVertexSetProperty(this, key, value);
 	}
 
-	public byte[] getProperty(String key){
-		if(key == null) return null;
+	public Future<byte[]> getProperty(String key){
+		if(key == null) throw new IllegalArgumentException("argument is null");
 
-		return Stages.getStore().addOperationVertexGetProperty(this, key).get();
+		return Stages.getStore().addOperationVertexGetProperty(this, key);
 	}
 
-	public byte[] removeProperty(String key){
+	public Future<byte[]> removeProperty(String key){
 		if(key == null) return null;
 
-		return Stages.getStore().addOperationVertexRemoveProperty(this, key).get();
+		return Stages.getStore().addOperationVertexRemoveProperty(this, key);
 	}
 
 	public Iterable<String> getPropertyKeys(){
@@ -68,10 +67,10 @@ public class VertexImpl implements Vertex {
 		return Stages.getStore().getIterableVertexPropertyValues(this);
 	}
 
-	public Edge putOutgoingEdge(Vertex other, String type){
+	public Future<Edge> putOutgoingEdge(Vertex other, String type){
 		if(other == null || type == null) return null;
 
-		return Stages.getStore().addOperationVertexPutOutgoingEdge(this, other, type).get();
+		return Stages.getStore().addOperationVertexPutOutgoingEdge(this, other, type);
 	}
 
 	public Iterable<Edge> getOutgoingEdges(){
@@ -82,10 +81,10 @@ public class VertexImpl implements Vertex {
 		return Stages.getStore().getIterableVertexOutgoingEdges(this, type);
 	}
 	
-	public Edge putIncomingEdge(Vertex other, String type){
-		if(other == null || type == null) return null;
+	public Future<Edge> putIncomingEdge(Vertex other, String type){
+		if(other == null || type == null) throw new IllegalArgumentException("argument is null");
 		
-		return Stages.getStore().addOperationVertexPutIncomingEdge(this, other, type).get();
+		return Stages.getStore().addOperationVertexPutIncomingEdge(this, other, type);
 	}
 
 	public Iterable<Edge> getIncomingEdges(){
@@ -96,7 +95,7 @@ public class VertexImpl implements Vertex {
 		return Stages.getStore().getIterableVertexIncomingEdges(this, type);
 	}
 
-	public void delete() {
-		Stages.getStore().addOperationRemoveVertex(this).get();
+	public Future<Void> delete() {
+		return Stages.getStore().addOperationRemoveVertex(this);
 	}
 }

@@ -1,19 +1,25 @@
 package org.acaro.stagedgraphish;
 
+import java.util.concurrent.Future;
+
 import org.acaro.stagedgraphish.operations.Stages;
 
 public class Graphish {
 	
-	public Vertex getVertex(byte[] id){
-		return Stages.getStore().addOperationGetVertex(id).get();
+	public Future<Vertex> getVertex(byte[] id){
+		if(id == null) throw new IllegalArgumentException("argument is null");
+		
+		return Stages.getStore().addOperationGetVertex(id);
 	}
 		
-	public Vertex addVertex() {
-		return Stages.getStore().addOperationCreateVertex().get();
+	public Future<Vertex> addVertex(){
+		return Stages.getStore().addOperationCreateVertex();
 	}
 	
-	public Edge getEdge(byte[] id){
-		return Stages.getStore().addOperationGetEdge(id).get();
+	public Future<Edge> getEdge(byte[] id){
+		if(id == null) throw new IllegalArgumentException("argument is null");
+		
+		return Stages.getStore().addOperationGetEdge(id);
 	}
 	
 	public Iterable<Edge> getEdges(){

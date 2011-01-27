@@ -4,11 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.ExecutionException;
-
-import org.acaro.stagedgraphish.Direction;
-import org.acaro.stagedgraphish.Edge;
-import org.acaro.stagedgraphish.Vertex;
 
 public abstract class ContainerIterator<T> implements Iterable<T>, Iterator<T> {
 	private LinkedList<T> resultsCache = new LinkedList<T>();
@@ -43,9 +38,9 @@ public abstract class ContainerIterator<T> implements Iterable<T>, Iterator<T> {
 		return this;
 	}
 	
-	abstract protected List<T> fetchResults(int size) throws InterruptedException, ExecutionException;
+	abstract protected List<T> fetchResults(int size);
 
-	private boolean fillCache(int size) throws InterruptedException, ExecutionException{
+	private boolean fillCache(int size){
 		boolean ret = false;
 		List<T> records;
 		

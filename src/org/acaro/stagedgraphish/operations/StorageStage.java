@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import org.acaro.stagedgraphish.Edge;
-import org.acaro.stagedgraphish.PropertyContainer;
 import org.acaro.stagedgraphish.Vertex;
 
 public interface StorageStage {

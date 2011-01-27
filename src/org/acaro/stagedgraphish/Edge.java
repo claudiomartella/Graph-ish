@@ -1,5 +1,7 @@
 package org.acaro.stagedgraphish;
 
+import java.util.concurrent.Future;
+
 public interface Edge extends PropertyContainer {
 	
 	public Vertex getFrom();
@@ -10,5 +12,5 @@ public interface Edge extends PropertyContainer {
 	
 	public String getType();
 	
-	public void delete();
+	public Future<Void> delete();
 }

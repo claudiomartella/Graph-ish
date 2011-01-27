@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.ExecutionException;
 
 import org.acaro.stagedgraphish.Direction;
 import org.acaro.stagedgraphish.Edge;
@@ -19,13 +18,13 @@ public abstract class NeighborhoodIterator implements Iterable<Edge>, Iterator<E
 	protected String type = null;
 	protected int bucketSize = 1000;
 	
-	public NeighborhoodIterator(Vertex v, Direction direction) throws InterruptedException, ExecutionException{
+	public NeighborhoodIterator(Vertex v, Direction direction) {
 		this.vertex    = v;
 		this.direction = direction;
 		hasNext = fillCache(1);
 	}
 	
-	public NeighborhoodIterator(Vertex v, Direction direction, String type) throws InterruptedException, ExecutionException{
+	public NeighborhoodIterator(Vertex v, Direction direction, String type) {
 		this.vertex    = v;
 		this.direction = direction;
 		this.type      = type;
@@ -59,9 +58,9 @@ public abstract class NeighborhoodIterator implements Iterable<Edge>, Iterator<E
 		return this;
 	}
 
-	abstract protected List<Edge> fetchResults(int size) throws InterruptedException, ExecutionException;
+	abstract protected List<Edge> fetchResults(int size);
 
-	private boolean fillCache(int size) throws InterruptedException, ExecutionException{
+	private boolean fillCache(int size){
 		boolean ret = false;
 		List<Edge> edges;
 		

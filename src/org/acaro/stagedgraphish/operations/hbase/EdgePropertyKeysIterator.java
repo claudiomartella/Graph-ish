@@ -1,5 +1,6 @@
 package org.acaro.stagedgraphish.operations.hbase;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.acaro.stagedgraphish.Edge;
@@ -14,6 +15,10 @@ public class EdgePropertyKeysIterator extends PropertyIterator<String> {
 
 	@Override
 	protected List<String> fetchIterator(PropertyContainer p) {
-		return Stages.getStore().addOperationEdgeGetPropertyKeys((Edge) p).get();
+		try {
+			return Stages.getStore().addOperationEdgeGetPropertyKeys((Edge) p).get();
+		} catch (Exception e) {
+			return new LinkedList<String>();
+		}
 	}
 }

@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.acaro.stagedgraphish.PropertyContainer;
-import org.acaro.stagedgraphish.Vertex;
 
 public abstract class PropertyIterator<T> implements Iterable<T>, Iterator<T> {
 	private List<T> items;

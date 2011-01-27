@@ -1,5 +1,6 @@
 package org.acaro.stagedgraphish.operations.hbase;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.acaro.stagedgraphish.PropertyContainer;
@@ -14,6 +15,10 @@ public class VertexPropertyValuesIterator extends PropertyIterator<byte[]> {
 
 	@Override
 	protected List<byte[]> fetchIterator(PropertyContainer p) {
-		return Stages.getStore().addOperationVertexGetPropertyValues((Vertex) p).get();
+		try {
+			return Stages.getStore().addOperationVertexGetPropertyValues((Vertex) p).get();
+		} catch (Exception e) {
+			return new LinkedList<byte[]>();
+		}
 	}
 }

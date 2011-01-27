@@ -1,5 +1,7 @@
 package org.acaro.stagedgraphish;
 
+import java.util.concurrent.Future;
+
 import org.acaro.stagedgraphish.operations.Stages;
 
 public class EdgeImpl implements Edge {
@@ -8,7 +10,7 @@ public class EdgeImpl implements Edge {
 	private byte[] id;
 	private int hashCode = -1;
 	
-	public EdgeImpl(byte[] id, Vertex from, Vertex to, String type){
+	public EdgeImpl(byte[] id, Vertex from, Vertex to, String type) {
 		this.type  = type;
 		this.from  = from;
 		this.to = to;
@@ -60,39 +62,39 @@ public class EdgeImpl implements Edge {
 		return type;
 	}
 	
-	public boolean hasProperty(String key){
-		if(key == null) return false;
+	public Future<Boolean> hasProperty(String key) {
+		if(key == null) throw new IllegalArgumentException("argument is null");
 		
-		return Stages.getStore().addOperationEdgeHasProperty(this, key).get();
+		return Stages.getStore().addOperationEdgeHasProperty(this, key);
 	}
 	
-	public void setProperty(String key, byte[] value){
-		if(key == null || value == null) return;
+	public Future<Void> setProperty(String key, byte[] value) {
+		if(key == null || value == null) throw new IllegalArgumentException("argument is null");
 	
-		Stages.getStore().addOperationEdgeSetProperty(this, key, value).get();
+		return Stages.getStore().addOperationEdgeSetProperty(this, key, value);
 	}
 
-	public byte[] getProperty(String key){
-		if(key == null) return null;
+	public Future<byte[]> getProperty(String key) {
+		if(key == null) throw new IllegalArgumentException("argument is null");
 
-		return Stages.getStore().addOperationEdgeGetProperty(this, key).get();
+		return Stages.getStore().addOperationEdgeGetProperty(this, key);
 	}
 
-	public byte[] removeProperty(String key){
-		if(key == null) return null;
+	public Future<byte[]> removeProperty(String key) {
+		if(key == null) throw new IllegalArgumentException("argument is null");
 
-		return Stages.getStore().addOperationEdgeRemoveProperty(this, key).get();
+		return Stages.getStore().addOperationEdgeRemoveProperty(this, key);
 	}
 
-	public Iterable<String> getPropertyKeys(){
-		return Stages.getStore().addOperationEdgeGetPropertyKeys(this).get();
+	public Iterable<String> getPropertyKeys() {
+		return Stages.getStore().getIterableEdgePropertyKeys(this);
 	}
 
-	public Iterable<byte[]> getPropertyValues(){
-		return Stages.getStore().addOperationEdgeGetPropertyValues(this).get();
+	public Iterable<byte[]> getPropertyValues() {
+		return Stages.getStore().getIterableEdgePropertyValues(this);
 	}
 
-	public void delete() {
-		return Stages.getStore().addOperationRemoveEdge(this).get();
+	public Future<Void> delete() {
+		return Stages.getStore().addOperationRemoveEdge(this);
 	}
 }
